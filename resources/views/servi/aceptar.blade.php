@@ -20,7 +20,7 @@
                 <x-input-label class="text-gray-800" for="empleado_id" :value="__('empleado del Empleado')" />  
                 <select id="empleado_id" name="empleado_id" class="block w-full px-6 py-2 my-4 text-md text-center text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-400 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     @foreach ($empleados as $empleado)
-                        <option selected value="{{$empleado->id}}"> {{ $empleado->nombre . ':  ' . $empleado->precio }}  </option>
+                        <option selected value="{{$empleado->id}}"> {{ $empleado->nombre . ' ' . $empleado->apellido . ' | ' . $empleado->ci}}  </option>
                     @endforeach
                 </select>
             </div>
