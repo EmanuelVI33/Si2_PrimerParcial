@@ -132,7 +132,6 @@ class ServicioController extends Controller
     public function aceptar($id)
     {
         $empleados = DB::table('empleados')
-            ->where('estado',  'L')
             ->get();
 
         return view('servi.aceptar' , ['empleados' => $empleados, 'id' => $id]);
