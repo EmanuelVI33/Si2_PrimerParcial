@@ -1,8 +1,8 @@
 <x-guest-layout>
     <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-black" />
+        <x-slot name="logo" class="bg-gray-900">
+            <a href="/" class="text-gray-900">
+                <x-application-logo class="w-20 h-20 fill-current" />
             </a>
         </x-slot>
 

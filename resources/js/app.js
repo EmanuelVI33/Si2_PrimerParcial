@@ -12,6 +12,13 @@ const duracion = document.querySelector('#duracion');
 
 
 radios.forEach(radio => {
+    if (radio.checked && radio.value == 1)
+        duracion.classList.add('hidden');
+    if (radio.checked && radio.value == 2)
+        duracion.classList.remove('hidden');   
+});
+
+radios.forEach(radio => {
     radio.addEventListener('change', () => {
         if (radio.checked && radio.value == 1)
             duracion.classList.add('hidden');
@@ -21,5 +28,5 @@ radios.forEach(radio => {
 });
 
 
-// Ocultar Sidebar
+
 

@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('contenido')
+
 <div class="grid grid-cols-4">
     <div class="flex justify-center items-center">
-        <button class="col-span-1 bg-indigo-700 hover:bg-indigo-900 hover:font-bold text-white px-4 p-2 rounded-md ">
+        <div class="col-span-1 bg-indigo-700 hover:bg-indigo-900 hover:font-bold text-white px-4 p-2 rounded-md ">
             <i class="fa-solid fa-plus pr-2"></i> <a href="{{ route('cargo.create') }}">Crear Cargo</a>
-        </button>
+        </div>
     </div>
 
     <h3 class="col-span-3 font-bold text-2xl p-3">
@@ -45,7 +46,9 @@
                     <td class="py-1 px-6">
                         {{ $cargo->salario_max }}
                     </td>
+                    
                     <td class="py-1 px-6">
+                        @role('adminstrador')
                         <div class="flex justify-center gap-2">
                             <form action="{{ route('cargo.edit', $cargo->id) }}" method="GET">
                                 @csrf
@@ -60,10 +63,11 @@
                                 <x-button-delete >
                                     Eliminar
                                 </x-button-delete>
-                                
                             </form>
                         </div>
+                        @endrole
                     </td>
+                    
                 </tr>
                 @endforeach
             </tbody>

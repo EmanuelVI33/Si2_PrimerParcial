@@ -83,7 +83,13 @@
                         @if ( $empleado->contrato_id)
                             Tiene Contrato
                         @else 
-                            No tiene Contrato
+                            @role('administrador')
+                            <div class="flex justify-center items-center">
+                                <div class="col-span-1 bg-green-700 hover:bg-green-900 hover:font-bold text-white px-4 p-1 rounded-md ">
+                                    <i class="fa-solid fa-plus pr-2"></i> <a href="{{ route('contrato.create', $empleado->id) }}">Crear Contrato</a>
+                                </div>
+                            </div>   
+                            @endrole 
                         @endif
                     </td>
                     <td class="py-3 px-1">
@@ -94,6 +100,7 @@
                                 </div>
                             </div>
 
+                            @role('administrador')
                             <form action="{{ route('empleado.edit', $empleado->id) }}" method="GET">
                                 @csrf
                                 <x-button-edit>
@@ -108,6 +115,7 @@
                                     Eliminar
                                 </x-button-delete>
                             </form>
+                            @endrole
                         </div>
                     </td>
                 </tr>

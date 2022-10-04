@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('contenido')
-
     <h3 class="text-2xl text-center font-bold mb-5">Empleado: {{ $empleado->nombre . ' ' . $empleado->apellido }}</h3>
 
     <div class="flex justify-center flex-col sm:flex-row">
         <div class="text-sm lg:text-lg mx-5 text-white bg-slate-800 rounded-lg p-3 mb-2">
-
+            
             <h3 class="font-bold text-center mb-2">Datos Personales</h3>
 
             {{-- Nombre --}} 
@@ -56,29 +55,5 @@
             @endif
         </div>
     </div>
-
-    @if($empleado->contrato):
-        {{-- <div class="bg-slate-900">
-            <div>
-                <h3 class="text-white text-center">Datos de Contrato</h3>
-
-                <div class="flex p-2 bg-slate-700 rounded-lg mb-2">
-                    @if ($empleado->contrato->tipo == 1)
-                        <label for="" class="font-bold pr-2">Tipo de Contrato: </label>
-                        <p> Contrato Indefinido </p>
-                    @else
-
-                    @endif
-                </div>   
-
-            </div>
-        </div> --}}
-     gbgff
-    @else
-        No tiene contrato
-    @endif
-
-
-
 
 @endsection

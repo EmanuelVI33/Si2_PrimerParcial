@@ -75,7 +75,9 @@
                                 No Definido    
                         @endswitch
                     </td>
+                    
                     <td class="py-1 px-6">
+                        @role('administrador')
                         <div class="flex justify-center gap-2">
                             <form action="{{ route('horario.edit', $horario->id) }}" method="GET">
                                 @csrf
@@ -92,7 +94,9 @@
                                 </x-button-delete>
                             </form>
                         </div>
+                        @endrole
                     </td>
+                    
                 </tr>
                 @endforeach
             </tbody>

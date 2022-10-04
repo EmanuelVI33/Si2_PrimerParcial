@@ -26,7 +26,7 @@ class ContratoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         $cargos = DB::table('cargos')
                     ->select('id', 'nombre', 'salario_min', 'salario_max')
@@ -36,12 +36,14 @@ class ContratoController extends Controller
                     ->select('id', 'nombre', 'hora_entrada', 'hora_salida')
                     ->get();
 
-        $empleados = DB::table('empleados')
-                    ->select('id', 'nombre', 'apellido', 'ci')
-                    ->whereNull('contrato_id')
-                    ->get();
-        
-        return view('contrato.create', ['cargos' => $cargos, 'horarios' => $horarios, 'empleados' => $empleados]);
+        $empleado = DB::table('empleados')
+                    ->select('id', 'nombre', 'apellido')
+                    ->where('id', $id)
+                    ->first();
+
+        return view('contrato.create', ['cargos' => $cargos, 
+                                        'horarios' => $horarios, 
+                                        'empleado' => $empleado]);
     }
 
     /**
@@ -52,6 +54,7 @@ class ContratoController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'tipo' => ['required', 'between:1,2'],
             'fecha_inicio' => ['required', 'date'],
@@ -85,13 +88,10 @@ class ContratoController extends Controller
 
         $empleado = Empleado::find($request->empleado_id);
         $empleado->contrato_id = $contrato->id;
+        $empleado->estado = 'L';
         $empleado->save();
 
         return redirect()->route('contrato.index');
-    }
-
-    public function contratar($id) {
-        return redirect()->route('contrato.create', ['empleado_id' => $id]);
     }
 
     /**
@@ -102,7 +102,22 @@ class ContratoController extends Controller
      */
     public function show($id)
     {
-        //
+        $cargos = DB::table('cargos')
+                    ->select('id', 'nombre', 'salario_min', 'salario_max')
+                    ->get();
+
+        $horarios = DB::table('horarios')
+                    ->select('id', 'nombre', 'hora_entrada', 'hora_salida')
+                    ->get();
+
+        $contrato = Contrato::find($id);
+
+        $vacacion = $contrato->vacacion(); 
+
+        return view('contrato.show', [ 'cargos' => $cargos, 
+                                                    'horarios' => $horarios,
+                                                    'contrato' => $contrato,
+                                                    'vacacion' => $vacacion]);    
     }
 
     /**
@@ -113,7 +128,28 @@ class ContratoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cargos = DB::table('cargos')
+                    ->select('id', 'nombre', 'salario_min', 'salario_max')
+                    ->get();
+
+        $horarios = DB::table('horarios')
+                    ->select('id', 'nombre', 'hora_entrada', 'hora_salida')
+                    ->get();
+
+        $contrato = DB::table('contratos')
+                    ->select('id', 'tipo', 'fecha_inicio','sueldo', 'duracion', 'vacacion_id')
+                    ->where('id', $id)
+                    ->first();
+
+        $vacacion = DB::table('vacacions')
+                    ->select('id', 'fecha_inicio','fecha_fin', 'duracion')
+                    ->where('id', $contrato->vacacion_id)
+                    ->first();
+
+        return view('contrato.edit', [ 'cargos' => $cargos, 
+                                        'horarios' => $horarios,
+                                        'contrato' => $contrato,
+                                        'vacacion' => $vacacion]);  
     }
 
     /**
@@ -125,7 +161,36 @@ class ContratoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'tipo' => ['numeric', 'between:1,2'],
+            'duracion' => ['nullable', 'numeric'],
+            'fecha_inicio' => ['date'],
+            'sueldo' => ['numeric'],
+            'cargo_id' => ['numeric'],
+            'horario_id' => ['numeric'],
+            'vacacion_fecha_inicio' => ['date'],
+            'vacacion_fecha_fin' => ['date'],
+            'vacacion_duracion' => ['numeric'],
+        ]);
+
+        $contrato = Contrato::find($id);
+        $contrato->tipo = $request->tipo;
+        $contrato->duracion = $contrato->tipo == 2 ? $request->duracion : null;
+        $contrato->fecha_inicio = $request->fecha_inicio;
+        $contrato->sueldo = $request->sueldo;  
+        $contrato->cargo_id = $request->cargo_id;
+        $contrato->horario_id = $request->horario_id;
+        
+        $vacacion = DB::table('vacacions')
+                    ->select('fecha_inicio', 'fecha_fin', 'duracion')
+                    ->first();
+
+        $vacacion->fecha_inicio = $request->fecha_inicio;
+        $vacacion->fecha_fin = $request->fecha_fin;
+        $vacacion->duracion = $request->duracion;
+        $vacacion->update();
+
+        return redirect()->route('contrato.index');
     }
 
     /**
@@ -136,6 +201,9 @@ class ContratoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $contrato = Contrato::find($id);
+        $contrato->delete();
+
+        return redirect()->route('contrato.index');
     }
 }

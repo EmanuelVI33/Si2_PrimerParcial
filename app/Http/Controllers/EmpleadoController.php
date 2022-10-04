@@ -94,7 +94,7 @@ class EmpleadoController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('contrato.create');  // Redirecciones para crear contrato
+        return redirect()->route('contrato.index');  // Redirecciones para crear contrato
     }
 
     /**
