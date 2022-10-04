@@ -16,6 +16,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
         <aside class="fixed h-screen w-16 lg:w-64 bg-gray-500" aria-label="Sidebar">
@@ -33,7 +34,7 @@
                             <li>
                                 <a href="{{route('servicio.solicitar', Auth()->user()->cliente->id)}}" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Solicitar Servicio</a>
                             </li>
-                            @endrole
+                            @endrole      
                             <li>
                                 <a href="{{route('servicio.index')}}" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Servicos en Espera</a>
                             </li>
