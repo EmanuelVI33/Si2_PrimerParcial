@@ -28,7 +28,7 @@ class ClienteController extends Controller
                     ->orWhere('ci', 'LIKE', '%'.$texto.'%')
                     ->orderBy('apellido', 'asc')
                     ->paginate(10);
-
+        
         return view('cliente.index', ['clientes' => $clientes, 'texto' => $texto]);
     }
 
